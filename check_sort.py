@@ -15,5 +15,5 @@ with open(args.file_path, 'r') as f:
         assert line >= previous_string
         line_qty += 1
 
-print 'checked %s lines' % line_qty
+print '%s is sorted and contains %d lines' % (args.file_path, line_qty)
 

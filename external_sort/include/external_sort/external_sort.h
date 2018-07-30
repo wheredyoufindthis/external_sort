@@ -6,14 +6,13 @@ namespace ExternalSort {
     struct IOutputStream {
         virtual ~IOutputStream() = default;
         virtual void WriteString(const std::string &s) = 0;
-        virtual void flushAndClose() = 0;
+        virtual void flush() = 0;
     };
 
     struct IInputStream {
         virtual ~IInputStream() = default;
         virtual void ReadString(std::string &s) = 0;
         virtual bool eof() = 0;
-        virtual void close() = 0;
     };
 
     struct IFileManager {

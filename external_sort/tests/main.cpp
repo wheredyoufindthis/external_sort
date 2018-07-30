@@ -18,8 +18,6 @@ struct TIStream: IInputStream {
         return IStream->eof();
     }
 
-    void close() final { }
-
 private:
     istream* IStream;
 };
@@ -31,7 +29,7 @@ struct TOStream: IOutputStream {
         *OStream << s;
     }
 
-    void flushAndClose() final {
+    void flush() final {
         OStream->flush();
     }
 
@@ -78,7 +76,6 @@ TEST(TestCaseName, TestName) {
     TOStream ostream(&output);
 
     ExternalSort::Sort(istream, ostream, fileManager, 4);
-    ostream.flushAndClose();
 
     vector<string> strings;
     istringstream iss(s);
@@ -92,5 +89,5 @@ TEST(TestCaseName, TestName) {
     copy(strings.begin(), strings.end(),
               ostream_iterator<string>(imploded, "\n"));
 
-    ASSERT_EQ(output.str(), imploded.str().substr(0, imploded.str().size()));
+    ASSERT_EQ(output.str(), imploded.str());
 }

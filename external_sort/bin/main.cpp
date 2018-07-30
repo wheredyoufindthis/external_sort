@@ -17,6 +17,10 @@ struct TBufferedOFileStream: IOutputStream {
             , BufferSize(bufferSize)
             , Buffer(new char[bufferSize]) {}
 
+    ~TBufferedOFileStream() {
+        fclose(File);
+    }
+
     void WriteString(const string& s) final {
         if (Offset + s.size() > BufferSize) {
             flush();
@@ -26,18 +30,13 @@ struct TBufferedOFileStream: IOutputStream {
         Offset += count;
     }
 
-    void flushAndClose() final {
-        flush();
-        fclose(File);
-    }
-
-private:
-    void flush() {
+    void flush() final {
         fwrite(Buffer.get(), 1, Offset, File);
         Offset = 0;
         fflush(File);
     }
 
+private:
     FILE* File;
     size_t BufferSize;
     unique_ptr<char[]> Buffer;
@@ -50,6 +49,10 @@ struct TBufferedIFileStream: IInputStream {
             : File(fopen(filename.c_str(), "r"))
             , BufferSize(bufferSize)
             , Buffer(new char[bufferSize]) {}
+
+    ~TBufferedIFileStream() {
+        fclose(File);
+    }
 
     void ReadString(string& s) final {
         if (Offset >= EndOfLine) {
@@ -75,10 +78,6 @@ struct TBufferedIFileStream: IInputStream {
 
     bool eof() final {
         return static_cast<bool>(feof(File)) && Offset >= EndOfLine;
-    }
-
-    void close() final {
-        fclose(File);
     }
 
 private:
@@ -142,6 +141,5 @@ int main(int argc, char** argv) {
 
     Sort(inputStream, outputStream, fileManager, chunkSize);
 
-    inputStream.close();
-    outputStream.flushAndClose();
+    outputStream.flush();
 }

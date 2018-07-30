@@ -64,7 +64,7 @@ namespace ExternalSort {
                 chunkOs->WriteString(it);
                 chunkOs->WriteString("\n");
             }
-            chunkOs->flushAndClose();
+            chunkOs->flush();
         }
 
         PriorityQueue chunkHeads;
@@ -84,10 +84,6 @@ namespace ExternalSort {
 
             chunkHeads.pop();
             ExtractChunkHeadIfNeeded(index, chunkInputs, chunkHeads);
-        }
-
-        for (auto &it: chunkInputs) {
-            it->close();
         }
     }
 }
