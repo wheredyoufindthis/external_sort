@@ -11,6 +11,12 @@
 using namespace std;
 using namespace ExternalSort;
 
+size_t CHUNK_SIZE = 5000000;
+size_t INPUT_FILE_BUFFER = 10000000;
+size_t OUTPUT_FILE_BUFFER = 10000000;
+size_t OUTPUT_CHUNK_FILE_BUFFER = 10000000;
+size_t INPUT_MERGE_FILE_BUFFER = 10000000;
+
 struct TBufferedOFileStream: IOutputStream {
     TBufferedOFileStream(size_t bufferSize, const string& filename)
             : File(fopen(filename.c_str(), "w"))
@@ -124,22 +130,16 @@ int main(int argc, char** argv) {
     string inputFileName = argv[1];
     string outputFileName = argv[2];
 
-    size_t chunkSize = 5000000;
-    size_t inputFileBuffer = 10000000;
-    size_t outputFileBuffer = 10000000;
-    size_t outputChunkFileBuffer = 10000000;
-    size_t inputMergeFileBuffer = 10000000;
-
     ifstream in(inputFileName, ifstream::ate);
     auto fileSize = static_cast<size_t>(in.tellg());
     in.close();
 
-    TBufferedIFileStream inputStream(inputFileBuffer, inputFileName);
-    TBufferedOFileStream outputStream(outputFileBuffer, outputFileName);
+    TBufferedIFileStream inputStream(INPUT_FILE_BUFFER, inputFileName);
+    TBufferedOFileStream outputStream(OUTPUT_FILE_BUFFER, outputFileName);
 
-    TFileManager fileManager(fileSize, outputChunkFileBuffer, inputMergeFileBuffer);
+    TFileManager fileManager(fileSize, OUTPUT_CHUNK_FILE_BUFFER, INPUT_MERGE_FILE_BUFFER);
 
-    Sort(inputStream, outputStream, fileManager, chunkSize);
+    Sort(inputStream, outputStream, fileManager, CHUNK_SIZE);
 
     outputStream.flush();
 }
