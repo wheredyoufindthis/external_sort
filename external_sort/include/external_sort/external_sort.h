@@ -13,6 +13,7 @@ namespace ExternalSort {
         virtual ~IInputStream() = default;
         virtual void ReadString(std::string &s) = 0;
         virtual bool eof() = 0;
+        virtual void close() = 0;
     };
 
     struct IFileManager {

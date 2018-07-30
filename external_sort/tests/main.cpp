@@ -18,6 +18,8 @@ struct TIStream: IInputStream {
         return IStream->eof();
     }
 
+    void close() final { }
+
 private:
     istream* IStream;
 };
@@ -76,6 +78,7 @@ TEST(TestCaseName, TestName) {
     TOStream ostream(&output);
 
     ExternalSort::Sort(istream, ostream, fileManager, 4);
+    ostream.flushAndClose();
 
     vector<string> strings;
     istringstream iss(s);

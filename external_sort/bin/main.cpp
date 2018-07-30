@@ -77,6 +77,10 @@ struct TBufferedIFileStream: IInputStream {
         return static_cast<bool>(feof(File)) && Offset >= EndOfLine;
     }
 
+    void close() final {
+        fclose(File);
+    }
+
 private:
     FILE* File{};
     size_t BufferSize;
@@ -137,4 +141,7 @@ int main(int argc, char** argv) {
     TFileManager fileManager(fileSize, outputChunkFileBuffer, inputMergeFileBuffer);
 
     Sort(inputStream, outputStream, fileManager, chunkSize);
+
+    inputStream.close();
+    outputStream.flushAndClose();
 }

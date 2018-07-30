@@ -85,6 +85,9 @@ namespace ExternalSort {
             chunkHeads.pop();
             ExtractChunkHeadIfNeeded(index, chunkInputs, chunkHeads);
         }
-        output.flushAndClose();
+
+        for (auto &it: chunkInputs) {
+            it->close();
+        }
     }
 }
