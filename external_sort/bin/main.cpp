@@ -13,9 +13,9 @@ using namespace ExternalSort;
 
 size_t CHUNK_SIZE = 5000000;
 size_t INPUT_FILE_BUFFER = 10000000;
-size_t OUTPUT_FILE_BUFFER = 10000000;
-size_t OUTPUT_CHUNK_FILE_BUFFER = 10000000;
-size_t INPUT_MERGE_FILE_BUFFER = 10000000;
+size_t OUTPUT_FILE_BUFFER = 1000000;
+size_t OUTPUT_CHUNK_FILE_BUFFER = 500000;
+size_t INPUT_MERGE_FILE_BUFFER = 500000;
 
 struct TBufferedOFileStream: IOutputStream {
     TBufferedOFileStream(size_t bufferSize, const string& filename)
