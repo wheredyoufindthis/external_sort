@@ -33,4 +33,6 @@ with open(args.output, 'w') as f:
             buffer_size = 0
             buffer_strings = []
             iteration_qty += 1
-            print 'Wrote %d symbols in %d iterations' % (size, iteration_qty)
+
+print 'Wrote %d symbols in %d iterations' % (size, iteration_qty)
+
