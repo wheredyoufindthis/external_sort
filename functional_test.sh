@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 if [ ! -f input_file ]; then
+    echo 'Generate input file, it might take some time...';
     ./file_generator.py --max-length 1000 --max-size 50000000 --output input_file --max-buffer-size 100000
 fi
 
