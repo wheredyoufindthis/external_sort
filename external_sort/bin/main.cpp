@@ -23,7 +23,7 @@ struct TBufferedOFileStream: IOutputStream {
             , BufferSize(bufferSize)
             , Buffer(new char[bufferSize]) {}
 
-    ~TBufferedOFileStream() {
+    ~TBufferedOFileStream() override {
         fclose(File);
     }
 
@@ -56,7 +56,7 @@ struct TBufferedIFileStream: IInputStream {
             , BufferSize(bufferSize)
             , Buffer(new char[bufferSize]) {}
 
-    ~TBufferedIFileStream() {
+    ~TBufferedIFileStream() override {
         fclose(File);
     }
 
@@ -66,9 +66,10 @@ struct TBufferedIFileStream: IInputStream {
             size_t bytesRead = fread(Buffer.get(), 1, BufferSize, File);
             assert(ferror(File) == 0);
             size_t lengthOfNextPortion = 0;
-            while (Buffer[bytesRead - lengthOfNextPortion] != '\n') {
+            while (bytesRead != lengthOfNextPortion && Buffer[bytesRead - lengthOfNextPortion] != '\n') {
                 lengthOfNextPortion++;
             }
+            assert(bytesRead != lengthOfNextPortion);
             EndOfLine = bytesRead - lengthOfNextPortion;
             if (!feof(File)) {
                 fseek(File, -1 * lengthOfNextPortion + 1, SEEK_CUR);
